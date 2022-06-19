@@ -1,7 +1,7 @@
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithFrom from './PopupWithForm';
+import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { useState } from 'react';
 import React from "react";
@@ -42,9 +42,9 @@ function App() {
       <Header />
       <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} handleCardClick={handleCardClick} />
       <Footer />
-      <PopupWithFrom name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} isClose={!isEditProfilePopupOpen} onClose={closeAllPopups} />
-      <PopupWithFrom name="card" title="Новое место" isOpen={isAddPlacePopupOpen} isClose={!isAddPlacePopupOpen} onClose={closeAllPopups} />
-      <PopupWithFrom name="avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} isClose={!isEditAvatarPopupOpen} onClose={closeAllPopups} />
+      <PopupWithForm name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} isClose={!isEditProfilePopupOpen} onClose={closeAllPopups} />
+      <PopupWithForm name="card" title="Новое место" isOpen={isAddPlacePopupOpen} isClose={!isAddPlacePopupOpen} onClose={closeAllPopups} />
+      <PopupWithForm name="avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} isClose={!isEditAvatarPopupOpen} onClose={closeAllPopups} />
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
     </div>
   );

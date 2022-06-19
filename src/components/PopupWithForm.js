@@ -1,6 +1,6 @@
 import React from "react";
 
-function PopupWithFrom(props) {
+function PopupWithForm(props) {
     const title = props.title;
     const name = props.name;
     //const children = props.children;
@@ -24,4 +24,4 @@ function PopupWithFrom(props) {
         </div>)
 }
 
-export default PopupWithFrom;
+export default PopupWithForm;
