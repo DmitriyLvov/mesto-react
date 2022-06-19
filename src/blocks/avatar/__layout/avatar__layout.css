@@ -5,7 +5,7 @@
   }
   to {
     background-color: rgba(0, 0, 0, 0.8);
-    background-image: url(/src/images/edit.svg);
+    background-image: url(../../../images/edit.svg);
   }
 }
 

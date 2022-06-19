@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from 'react';
 import api from '../utils/Api';
 import Card from './Card';
@@ -37,7 +38,7 @@ function Main(props) {
         <button type="button" className="profile__add-button" onClick={props.onAddPlace}></button>
       </div>
       <ul className="elements">
-        {cards.map((card) => <Card key={card._id} card={card} hadnleCardClick={props.hadnleCardClick} />)}
+        {cards.map((card) => <Card key={card._id} card={card} handleCardClick={props.handleCardClick} />)}
       </ul>
     </section>
   </main>)

@@ -1,11 +1,14 @@
+import React from "react";
+
 function Card(props) {
   const card = props.card;
   const handleCardClick = () => {
+    //Открытие попапа для увеличения картинки
     props.handleCardClick(props.card);
   }
   return (
-    <li className="elements__item" onClick={handleCardClick}>
-      <img className="elements__image" src={card.link} alt={card.name} />
+    <li className="elements__item">
+      <img className="elements__image" src={card.link} alt={card.name} onClick={handleCardClick}/>
       <div className="elements__description">
         <p className="elements__title">{card.name}</p>
         <div>

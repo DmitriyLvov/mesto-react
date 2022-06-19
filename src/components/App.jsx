@@ -4,6 +4,7 @@ import Footer from './Footer';
 import PopupWithFrom from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { useState } from 'react';
+import React from "react";
 
 function App() {
   //Обработчк открытия Popup для редактирования аватара
@@ -23,29 +24,28 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    selectedCard = "";
+    setSelectedCard("");
   }
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  let selectedCard;
-
-  const hadnleCardClick = (card) => {
-    selectedCard = card;
-    console.log("s")
+  const [selectedCard, setSelectedCard] = useState("")
+  
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
   }
 
 
   return (
     <div className="root">
       <Header />
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} hadnleCardClick={hadnleCardClick} />
+      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} handleCardClick={handleCardClick} />
       <Footer />
       <PopupWithFrom name="profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} isClose={!isEditProfilePopupOpen} onClose={closeAllPopups} />
       <PopupWithFrom name="card" title="Новое место" isOpen={isAddPlacePopupOpen} isClose={!isAddPlacePopupOpen} onClose={closeAllPopups} />
       <PopupWithFrom name="avatar" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} isClose={!isEditAvatarPopupOpen} onClose={closeAllPopups} />
-      <ImagePopup card={selectedCard} />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
     </div>
   );
 }

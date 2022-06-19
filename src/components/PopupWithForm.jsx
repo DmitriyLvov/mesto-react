@@ -1,7 +1,9 @@
+import React from "react";
+
 function PopupWithFrom(props) {
     const title = props.title;
     const name = props.name;
-    const children = props.children;
+    //const children = props.children;
     const isOpen = props.isOpen;
     const isClose = props.isClose;
     let classStyle;
