@@ -1,27 +1,34 @@
-import React from "react";
+import React from 'react';
+import { popupClassStyle } from '../utils/utils';
 
-function PopupWithForm(props) {
-    const title = props.title;
-    const name = props.name;
-    //const children = props.children;
-    const isOpen = props.isOpen;
-    const isClose = props.isClose;
-    let classStyle;
-    if (isOpen) {
-        classStyle = `popup popup_type_${name} popup_opened`;
-    }
-    if (isClose) {
-        classStyle = `popup popup_type_${name}`;
-    }
-
-    return (
-        <div className={classStyle}>
-            <form name={`${name}-form`} className={`popup__container popup__container_type_form`} noValidate>
-                <button type="button" className="popup__close-button" onClick={props.onClose}></button>
-                <h2 className="popup__title">{title}</h2>
-                <button type="submit" className="popup__submit-button popup__submit-button_type_confirm">Да</button>
-            </form>
-        </div>)
+function PopupWithForm({
+  title,
+  name,
+  isOpen,
+  isClose,
+  onClose,
+  children,
+  buttonText,
+}) {
+  return (
+    <div className={popupClassStyle(name, isOpen)}>
+      <form
+        name={`${name}-form`}
+        className={`popup__container popup__container_type_form`}>
+        <button
+          type='button'
+          className='popup__close-button'
+          onClick={onClose}></button>
+        <h2 className='popup__title'>{title}</h2>
+        {children}
+        <button
+          type='submit'
+          className='popup__submit-button popup__submit-button_type_confirm'>
+          {buttonText}
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default PopupWithForm;
