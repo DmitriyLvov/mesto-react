@@ -1,21 +1,17 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import api from '../utils/Api';
 import Card from './Card';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace, handleCardClick }) {
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
   const [cards, setCards] = useState([]);
-  const { getAuthorInfo, getCards } = api;
+  const currentUser = useContext(CurrentUserContext);
+  const { getCards, addLike, removeLike, removeCard } = api;
 
   useEffect(() => {
-    Promise.all([getAuthorInfo(), getCards()])
-      .then(([userInfo, cards]) => {
-        setUserName(userInfo.name);
-        setUserDescription(userInfo.about);
-        setUserAvatar(userInfo.avatar);
+    Promise.all([getCards()])
+      .then(([cards]) => {
         setCards(cards);
       })
       .catch((err) => {
@@ -23,18 +19,50 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, handleCardClick }) {
       });
   }, []);
 
+  function handleCardLike(card) {
+    // Проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    isLiked
+      ? removeLike(card._id)
+          .then((newCard) =>
+            setCards((state) =>
+              state.map((c) => (c._id === card._id ? newCard : c))
+            )
+          )
+          .catch((er) => console.log('Ошибка удаления лайка: ', er))
+      : addLike(card._id)
+          .then((newCard) => {
+            setCards((state) =>
+              state.map((c) => (c._id === card._id ? newCard : c))
+            );
+          })
+          .catch((er) => console.log('Ошибка добавления лайка: ', er));
+  }
+
+  function handleCardDelete(card) {
+    removeCard(card._id)
+      .then(() =>
+        setCards((prevState) => prevState.filter((c) => c._id !== card._id))
+      )
+      .catch((er) => console.log('Ошибка удаления карточки: ', er));
+  }
+
   return (
     <main>
       <section>
         <div className='profile'>
           <div className='avatar' onClick={onEditAvatar}>
-            <img className='avatar__image' src={userAvatar} alt='Аватар' />
+            <img
+              className='avatar__image'
+              src={currentUser.avatar}
+              alt='Аватар'
+            />
             <div className='avatar__layout'></div>
           </div>
           <div className='profile__info'>
             <div className='profile__author-panel'>
               <h1 className='profile__text-field profile__text-field_type_author'>
-                {userName}
+                {currentUser.name}
               </h1>
               <button
                 type='button'
@@ -42,7 +70,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, handleCardClick }) {
                 onClick={onEditProfile}></button>
             </div>
             <p className='profile__text-field profile__text-field_type_description'>
-              {userDescription}
+              {currentUser.about}
             </p>
           </div>
           <button
@@ -56,6 +84,8 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, handleCardClick }) {
               key={card._id}
               card={card}
               handleCardClick={handleCardClick}
+              onCardDelete={handleCardDelete}
+              onCardLike={handleCardLike}
             />
           ))}
         </ul>

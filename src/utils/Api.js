@@ -41,10 +41,7 @@ class Api {
     const { name, link } = data;
     return fetch(`${this._baseURL}/cards`, {
       method: 'POST',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json',
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name,
         link,
@@ -55,37 +52,28 @@ class Api {
   removeCard = (cardId) => {
     return fetch(`${this._baseURL}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._getResponseData(res));
   };
 
   addLike = (cardId) => {
     return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._getResponseData(res));
   };
 
   removeLike = (cardId) => {
     return fetch(`${this._baseURL}/cards/${cardId}/likes`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._getResponseData(res));
   };
 
   setAvatar = (avatar) => {
     return fetch(`${this._baseURL}/users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json',
-      },
+      headers: this._headers,
       body: JSON.stringify({
         avatar,
       }),
