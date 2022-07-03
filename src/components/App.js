@@ -1,21 +1,22 @@
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
-import ImagePopup from './ImagePopup';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import api from '../utils/Api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import ConfirmPopup from './ConfirmPopup';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -59,7 +60,8 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsImagePopupOpen(false);
-    setSelectedCard({ name: '', link: '' });
+    setIsConfirmPopupOpen(false);
+    setSelectedCard({ name: '', link: '', id: '' });
   };
 
   const handleCardClick = (card) => {
@@ -111,18 +113,26 @@ function App() {
           .catch((er) => console.log('Ошибка добавления лайка: ', er));
   };
 
-  const handleCardDelete = (card) => {
-    removeCard(card._id)
-      .then(() =>
-        setCards((prevState) => prevState.filter((c) => c._id !== card._id))
-      )
+  const handleCardDelete = () => {
+    removeCard(selectedCard._id)
+      .then(() => {
+        setCards((prevState) =>
+          prevState.filter((c) => c._id !== selectedCard._id)
+        );
+        closeAllPopups();
+      })
       .catch((er) => console.log('Ошибка удаления карточки: ', er));
+  };
+
+  const handleCardDeleteWithConfirm = (card) => {
+    setSelectedCard(card);
+    setIsConfirmPopupOpen(true);
   };
 
   const handleAddPlace = (data) => {
     addNewCard(data)
       .then((res) => {
-        setCards((prevState) => [...prevState, res]);
+        setCards((prevState) => [res, ...prevState]);
         closeAllPopups();
       })
       .catch((er) => console.log('Ошибка добавления нового места', er));
@@ -139,7 +149,7 @@ function App() {
           handleCardClick={handleCardClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onCardDelete={handleCardDeleteWithConfirm}
         />
         <Footer />
         <EditProfilePopup
@@ -159,9 +169,13 @@ function App() {
         />
         <ImagePopup
           card={selectedCard}
-          onClose={closeAllPopups}
           isOpen={isImagePopupOpen}
-          isClose={!isImagePopupOpen}
+          onClose={closeAllPopups}
+        />
+        <ConfirmPopup
+          isOpen={isConfirmPopupOpen}
+          onClose={closeAllPopups}
+          onConfirm={handleCardDelete}
         />
       </div>
     </CurrentUserContext.Provider>

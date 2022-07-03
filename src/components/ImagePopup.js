@@ -1,7 +1,7 @@
 import React from 'react';
 import { popupClassStyle } from '../utils/utils';
 
-function ImagePopup({ card, isOpen, isClose, onClose }) {
+function ImagePopup({ card, isOpen, onClose }) {
   return (
     <>
       <div className={popupClassStyle('image', isOpen)}>
@@ -9,7 +9,8 @@ function ImagePopup({ card, isOpen, isClose, onClose }) {
           <button
             type='button'
             className='popup__close-button'
-            onClick={onClose}></button>
+            onClick={onClose}
+          ></button>
           <img className='popup__image' src={card.link} alt={card.name} />
           <p className='popup__description'>{card.name}</p>
         </div>

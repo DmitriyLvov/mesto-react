@@ -1,17 +1,15 @@
 import React from 'react';
 import { popupClassStyle } from '../utils/utils';
 
-function PopupWithForm(props) {
-  const {
-    title,
-    name,
-    isOpen,
-    isClose,
-    onClose,
-    children,
-    buttonText,
-    onSubmit,
-  } = props;
+function PopupWithForm({
+  title,
+  name,
+  isOpen,
+  onClose,
+  children,
+  buttonText,
+  onSubmit,
+}) {
   return (
     <div className={popupClassStyle(name, isOpen)}>
       <form
