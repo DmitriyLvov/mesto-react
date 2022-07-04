@@ -66,3 +66,6 @@
 
 @import url('../src/blocks/footer/footer.css');
 @import url('../src/blocks/footer/__copyright/footer__copyright.css');
+
+/*Спиннер*/
+@import url('../src/blocks/spinner/spinner.css');

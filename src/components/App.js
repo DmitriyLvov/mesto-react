@@ -10,6 +10,7 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmPopup from './ConfirmPopup';
+import Spinner from './Spinner';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -20,6 +21,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     getAuthorInfo,
@@ -32,10 +34,12 @@ function App() {
     addNewCard,
   } = api;
   useEffect(() => {
+    setIsLoading(true);
     Promise.all([getCards(), getAuthorInfo()])
       .then(([cards, userInfo]) => {
         setCards(cards);
         setCurrentUser({ ...userInfo });
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(`Ошибка запроса стартовой информации: ${err}`);
@@ -62,6 +66,7 @@ function App() {
     setIsImagePopupOpen(false);
     setIsConfirmPopupOpen(false);
     setSelectedCard({ name: '', link: '', id: '' });
+    setIsLoading(false);
   };
 
   const handleCardClick = (card) => {
@@ -77,6 +82,7 @@ function App() {
 
   //Обновление данных пользователя
   const handleUpdateUser = (userInfo) => {
+    setIsLoading(true);
     setUserInfo(userInfo)
       .then((res) => {
         updataUserData(res);
@@ -86,6 +92,7 @@ function App() {
 
   //Обновление аватара
   const handleUpdateAvatar = (avatar) => {
+    setIsLoading(true);
     setAvatar(avatar)
       .then((res) => {
         updataUserData(res);
@@ -114,6 +121,7 @@ function App() {
   };
 
   const handleCardDelete = () => {
+    setIsLoading(true);
     removeCard(selectedCard._id)
       .then(() => {
         setCards((prevState) =>
@@ -130,6 +138,7 @@ function App() {
   };
 
   const handleAddPlace = (data) => {
+    setIsLoading(true);
     addNewCard(data)
       .then((res) => {
         setCards((prevState) => [res, ...prevState]);
@@ -156,27 +165,33 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          isLoading={isLoading}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          isLoading={isLoading}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlace}
+          isLoading={isLoading}
         />
         <ImagePopup
           card={selectedCard}
           isOpen={isImagePopupOpen}
           onClose={closeAllPopups}
+          isLoading={isLoading}
         />
         <ConfirmPopup
           isOpen={isConfirmPopupOpen}
           onClose={closeAllPopups}
           onConfirm={handleCardDelete}
+          isLoading={isLoading}
         />
+        <Spinner isLoading={isLoading} />
       </div>
     </CurrentUserContext.Provider>
   );

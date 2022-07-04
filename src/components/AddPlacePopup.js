@@ -2,7 +2,7 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 import { useState } from 'react';
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
   const handleSubmit = (e) => {
@@ -19,7 +19,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonText='Добавить'
-    >
+      buttonTextOnLoading='Добавление'
+      isLoading={isLoading}>
       <input
         id='name'
         className='popup__text-input popup__text-input_order_first popup__text-input_type_picture-name'
