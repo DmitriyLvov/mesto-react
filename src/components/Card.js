@@ -1,5 +1,4 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card({ card, handleCardClick, onCardLike, onCardDelete }) {
@@ -41,16 +40,14 @@ function Card({ card, handleCardClick, onCardLike, onCardDelete }) {
           <button
             type='button'
             className={likeButtonClass}
-            onClick={handleLikeClick}
-          ></button>
+            onClick={handleLikeClick}></button>
           <p className='elements__like-counter'>{card.likes.length}</p>
         </div>
       </div>
       <button
         type='button'
         className={deleteButtonClass}
-        onClick={handleDeleteCard}
-      ></button>
+        onClick={handleDeleteCard}></button>
     </li>
   );
 }

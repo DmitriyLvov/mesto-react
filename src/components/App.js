@@ -1,16 +1,15 @@
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import { useState, useEffect } from 'react';
-import React from 'react';
-import api from '../utils/Api';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmPopup from './ConfirmPopup';
 import Spinner from './Spinner';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from '../utils/api';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -23,19 +22,9 @@ function App() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    getAuthorInfo,
-    setUserInfo,
-    setAvatar,
-    getCards,
-    addLike,
-    removeLike,
-    removeCard,
-    addNewCard,
-  } = api;
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([getCards(), getAuthorInfo()])
+    Promise.all([api.getCards(), api.getAuthorInfo()])
       .then(([cards, userInfo]) => {
         setCards(cards);
         setCurrentUser({ ...userInfo });
@@ -83,7 +72,8 @@ function App() {
   //Обновление данных пользователя
   const handleUpdateUser = (userInfo) => {
     setIsLoading(true);
-    setUserInfo(userInfo)
+    api
+      .setUserInfo(userInfo)
       .then((res) => {
         updataUserData(res);
       })
@@ -93,7 +83,8 @@ function App() {
   //Обновление аватара
   const handleUpdateAvatar = (avatar) => {
     setIsLoading(true);
-    setAvatar(avatar)
+    api
+      .setAvatar(avatar)
       .then((res) => {
         updataUserData(res);
       })
@@ -104,14 +95,16 @@ function App() {
     // Проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     isLiked
-      ? removeLike(card._id)
+      ? api
+          .removeLike(card._id)
           .then((newCard) =>
             setCards((state) =>
               state.map((c) => (c._id === card._id ? newCard : c))
             )
           )
           .catch((er) => console.log('Ошибка удаления лайка: ', er))
-      : addLike(card._id)
+      : api
+          .addLike(card._id)
           .then((newCard) => {
             setCards((state) =>
               state.map((c) => (c._id === card._id ? newCard : c))
@@ -122,7 +115,8 @@ function App() {
 
   const handleCardDelete = () => {
     setIsLoading(true);
-    removeCard(selectedCard._id)
+    api
+      .removeCard(selectedCard._id)
       .then(() => {
         setCards((prevState) =>
           prevState.filter((c) => c._id !== selectedCard._id)
@@ -139,7 +133,8 @@ function App() {
 
   const handleAddPlace = (data) => {
     setIsLoading(true);
-    addNewCard(data)
+    api
+      .addNewCard(data)
       .then((res) => {
         setCards((prevState) => [res, ...prevState]);
         closeAllPopups();

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -34,8 +33,7 @@ function Main({
               <button
                 type='button'
                 className='profile__edit-button'
-                onClick={onEditProfile}
-              ></button>
+                onClick={onEditProfile}></button>
             </div>
             <p className='profile__text-field profile__text-field_type_description'>
               {currentUser.about}
@@ -44,8 +42,7 @@ function Main({
           <button
             type='button'
             className='profile__add-button'
-            onClick={onAddPlace}
-          ></button>
+            onClick={onAddPlace}></button>
         </div>
         <ul className='elements'>
           {cards.map((card) => (

@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
-import { useState } from 'react';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
+  const [formValues, setFormValues] = useState({ name: '', link: '' });
+  //Обработка инпутов
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevState) => ({ ...prevState, [name]: value }));
+  };
+  //Подтверждение сохранения картинки
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log({ name, link });
-    onAddPlace({ name, link });
+    console.log();
+    onAddPlace(formValues);
   };
   return (
     <PopupWithForm
@@ -23,10 +27,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
       isLoading={isLoading}>
       <input
         id='name'
+        name='name'
         className='popup__text-input popup__text-input_order_first popup__text-input_type_picture-name'
         type='text'
         placeholder='Название'
-        onChange={(e) => setName(e.target.value)}
+        onChange={handleChangeInput}
         minLength='2'
         maxLength='30'
         required
@@ -34,8 +39,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
       <span className='popup__error popup__error_type_name popup__error_order_first' />
       <input
         id='path'
+        name='link'
         className='popup__text-input popup__text-input_order_next popup__text-input_type_picture-path'
-        onChange={(e) => setLink(e.target.value)}
+        onChange={handleChangeInput}
         type='url'
         placeholder='Ссылка на картинку'
         required
