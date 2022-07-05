@@ -17,3 +17,4 @@
 ---
 
 Ссылка на gh-pages:
+https://dmitriylvov.github.io/mesto-react/

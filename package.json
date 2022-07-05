@@ -1,7 +1,8 @@
 {
   "name": "mesto_react",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "homepage": "https://dmitriylvov.github.io/mesto-react",
   "dependencies": {
     "buffer": "^6.0.3",
     "react": "^18.2.0",
