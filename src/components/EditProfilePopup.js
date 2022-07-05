@@ -7,11 +7,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   const currentUser = useContext(CurrentUserContext);
   //Установка данных пользователя по умолчанию
   useEffect(() => {
-    if (isOpen === true) {
-      const { name, about } = currentUser;
-      console.log({ name, about });
-      setFormValues({ name, about });
-    }
+    const { name, about } = currentUser;
+    setFormValues({ name, about });
   }, [currentUser, isOpen]);
 
   //Обработка инпутов
